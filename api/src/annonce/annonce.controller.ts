@@ -31,4 +31,8 @@ export class AnnonceController {
   remove(@Param('id') id: string) {
     return this.annonceService.remove(+id);
   }
+  @Get('/loc/:place')
+  findAllByPlace(@Param('place') place : string) {
+    return this.annonceService.findAllByPlace(place);
+  }
 }

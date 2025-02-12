@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateAnnonceDto } from './dto/create-annonce.dto';
 import { UpdateAnnonceDto } from './dto/update-annonce.dto';
 import { Annonce } from './entities/annonce.entity';
@@ -21,14 +21,26 @@ export class AnnonceService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} annonce`;
+    return this.annonceRepository.findOneBy({id});
   }
 
-  update(id: number, updateAnnonceDto: UpdateAnnonceDto) {
-    return `This action updates a #${id} annonce`;
+  async update(id: number, updateAnnonceDto: UpdateAnnonceDto) {
+    const previous = await this.annonceRepository.findOneBy({id});
+    if(!previous){
+      throw new HttpException({ message: 'Drink not found.' }, HttpStatus.NOT_FOUND);
+    } else {
+      await this.annonceRepository.update(id, { ...updateAnnonceDto });
+    return this.annonceRepository.findOneBy({ id });
+    }
   }
 
   remove(id: number) {
-    return `This action removes a #${id} annonce`;
+    return this.annonceRepository.delete(id);
+  }
+
+  findAllByPlace(place: string){
+    return this.annonceRepository.findBy({
+      localisation : place
+    });
   }
 }

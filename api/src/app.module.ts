@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Annonce } from './annonce/entities/annonce.entity';
 import { User } from './users/entities/user.entity';
 import { UsersModule } from './users/users.module';
+import { PriceUpdateModule } from './price-update/price-update.module';
 
 @Module({
   imports: [
@@ -19,7 +20,7 @@ import { UsersModule } from './users/users.module';
       entities: [Annonce, User],
       synchronize: true,
     }),
-  AnnonceModule, UsersModule
+  AnnonceModule, UsersModule, PriceUpdateModule
   ],
   controllers: [AppController],
   providers: [AppService],
